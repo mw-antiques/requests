@@ -1,2 +1,2 @@
 # requests
-subdomain.code
+subdomain
