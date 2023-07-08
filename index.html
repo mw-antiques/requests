@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+
+    pre {
+      background-color: #000;
+      padding: 10px;
+      overflow: auto;
+      white-space: pre-wrap;
+      border-radius: 5px;
+      max-height: 400px;
+      border: 1px solid #0f0;
+    }
+
+    .header {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .button {
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .loader {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #0f0;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="header">Request Logs</h1>
+  <pre id="console"></pre>
+
+  <div>
+    <button class="button" onclick="refreshLogs()">Refresh</button>
+    <button class="button" onclick="clearLogs()">Clear Logs</button>
+    <a href="#" class="button" onclick="exportLogs()">Export</a>
+  </div>
+
+  <script>
+    // Function to fetch and display the log file contents
+    function fetchLogs() {
+      const consoleElement = document.getElementById('console');
+      consoleElement.innerHTML = '<div class="loader"></div>Loading logs...';
+
+      fetch('requests.txt')
+        .then(response => response.text())
+        .then(data => {
+          consoleElement.textContent = escapeHtml(data);
+          consoleElement.scrollTop = consoleElement.scrollHeight;
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Escape HTML entities
+    function escapeHtml(text) {
+      const element = document.createElement('div');
+      element.textContent = text;
+      return element.innerHTML;
+    }
+
+    // Refresh logs button click handler
+    function refreshLogs() {
+      fetchLogs();
+    }
+
+    // Clear logs button click handler
+    function clearLogs() {
+      const consoleElement = document.getElementById('console');
+      consoleElement.innerHTML = '<div class="loader"></div>Clearing logs...';
+
+      fetch('clear_logs.php', { method: 'POST' })
+        .then(response => {
+          if (response.ok) {
+            console.log('Logs cleared successfully');
+            fetchLogs();
+          }
+        })
+        .catch(error => console.log(error));
+    }
+
+    // Export logs button click handler
+    function exportLogs() {
+      const link = document.createElement('a');
+      link.href = 'requests.txt';
+      link.download = 'requests.txt';
+      link.click();
+    }
+
+    // Initial fetch of the log file contents
+    fetchLogs();
+  </script>
+</body>
+</html>
