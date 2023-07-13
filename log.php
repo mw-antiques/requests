@@ -15,4 +15,6 @@ file_put_contents($logFile, "$method $loggedParams [IP: $ip]\n", FILE_APPEND);
 
 // Alert the logged parameters
 echo "<script>alert('ATTACKER SUCCESSFULLY LOGGED YOUR IP AND: " . htmlspecialchars($loggedParams, ENT_QUOTES) . "');</script>";
+
+echo "Log file written:";
 ?>
