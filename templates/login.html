@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .image-container img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        alert('click ok');
+        setTimeout(loadImage, 1000);
+
+        function loadImage() {
+            var imageContainer = document.querySelector('.image-container');
+            var image = document.getElementById('background-image');
+
+            imageContainer.style.display = 'block';
+
+            image.src = "/static/haha.webp";
+        }
+    </script>
+
+    <div class="image-container">
+        <img src="/static/haha.webp" alt="Background Image" id="background-image">
+    </div>
+</body>
+</html>

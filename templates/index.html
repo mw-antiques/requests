@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity Logs</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: black;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #2e4cad;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        pre {
+            background-color: #000000;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            color: rgb(69, 231, 20);
+        }
+    </style>
+</head>
+<body>
+    <h1>Server Activity Monitor</h1>
+    <button id="refresh-btn">Refresh Logs</button>
+    <button id="download-btn">Download Logs</button>
+    <button id="clear-btn">Clear Logs</button>
+    <pre id="logs">{{ logs }}</pre>
+
+    <script>
+        $(document).ready(function() {
+            function refreshLogs() {
+                $.ajax({
+                    url: '/refresh_logs',
+                    success: function(response) {
+                        $('#logs').text(response.logs);
+                    }
+                });
+            }
+
+            $('#refresh-btn').click(function() {
+                refreshLogs();
+            });
+
+            $('#download-btn').click(function() {
+                window.location.href = '/download_logs';
+            });
+
+            $('#clear-btn').click(function() {
+                $.ajax({
+                    url: '/clear_logs',
+                    success: function(response) {
+                        $('#logs').text('');
+                    }
+                });
+            });
+
+            refreshLogs();
+        });
+    </script>
+</body>
+</html>
