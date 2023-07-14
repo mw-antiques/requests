@@ -85,4 +85,4 @@ def log_request_info():
     logs.append(log_entry)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
